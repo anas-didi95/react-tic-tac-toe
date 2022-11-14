@@ -1,9 +1,18 @@
 import "./App.scss"
 import Container from "./components/Container"
+import Tile from "./components/Tile"
 
 const App: React.FC<{}> = () => (
   <Container>
-    <div>Hello world</div>
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
+    <Tile />
   </Container>
 )
 
