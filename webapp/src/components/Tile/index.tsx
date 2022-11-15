@@ -4,7 +4,7 @@ import "./style.scss"
 const players = [{ label: "X" }, { label: "O" }]
 
 const Player: React.FC<{ turn: number }> = ({ turn }) => (
-  <span className={turn === 0 ? "player-x" : "player-0"}>
+  <span className={turn === 0 ? "player-x" : "player-o"}>
     {players[turn].label}
   </span>
 )

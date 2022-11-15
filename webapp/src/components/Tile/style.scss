@@ -1,5 +1,5 @@
 .tile {
-  border: 1px solid white;
+  border: 1px solid black;
   min-width: 100px;
   min-height: 100px;
   display: flex;
@@ -7,6 +7,10 @@
   align-items: center;
   font-size: 50px;
   cursor: pointer;
+}
+
+.tile:hover {
+  background-color: yellow;
 }
 
 .player-x {
