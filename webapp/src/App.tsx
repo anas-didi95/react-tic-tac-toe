@@ -7,11 +7,19 @@ const App: React.FC<{}> = () => {
   const { placeList, playTurn } = useGameContext()
 
   return (
-    <Container>
-      {placeList.map((place, i) => (
-        <Tile key={`tile${i}`} place={place} playTurn={() => playTurn(i)} />
-      ))}
-    </Container>
+    <main className="background">
+      <section className="title">
+        <h1>Tic Tac Toe</h1>
+      </section>
+      <section className="display">
+        Player <span className="display-player playerX">X</span>'s turn
+      </section>
+      <Container>
+        {placeList.map((place, i) => (
+          <Tile key={`tile${i}`} place={place} playTurn={() => playTurn(i)} />
+        ))}
+      </Container>
+    </main>
   )
 }
 
