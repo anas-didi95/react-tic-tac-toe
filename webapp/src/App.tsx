@@ -1,6 +1,7 @@
 import "./App.scss"
 import Container from "./components/Container"
 import Tile from "./components/Tile"
+import Title from "./components/Title"
 import { useGameContext } from "./utils/contexts/GameContext"
 
 const App: React.FC<{}> = () => {
@@ -8,9 +9,7 @@ const App: React.FC<{}> = () => {
 
   return (
     <main className="background">
-      <section className="title">
-        <h1>Tic Tac Toe</h1>
-      </section>
+      <Title />
       <section className="display">
         Player <span className="display-player playerX">X</span>'s turn
       </section>
