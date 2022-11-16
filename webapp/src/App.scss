@@ -1,3 +1,5 @@
+@import "./variables";
+
 * {
   padding: 0;
   margin: 0;
@@ -5,7 +7,7 @@
 }
 
 .background {
-  background-color: #12181b;
+  background-color: $color-background;
   height: 100vh;
   padding-top: 1px;
 }
