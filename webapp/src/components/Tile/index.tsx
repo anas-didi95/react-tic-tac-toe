@@ -1,20 +1,20 @@
-import { useGameContext } from "../../utils/contexts/GameContext"
 import "./style.scss"
 
 const players = [{ label: "X" }, { label: "O" }]
 
-const Player: React.FC<{ turn: number }> = ({ turn }) => (
-  <span className={turn === 0 ? "player-x" : "player-o"}>
-    {players[turn].label}
+const Player: React.FC<{ place: number }> = ({ place }) => (
+  <span className={place === 0 ? "player-x" : place === 1 ? "player-o" : ""}>
+    {place !== -1 && players[place].label}
   </span>
 )
 
-const Tile: React.FC<{}> = () => {
-  const { turn, playTurn } = useGameContext()
-
+const Tile: React.FC<{ place: number; playTurn: () => void }> = ({
+  place,
+  playTurn,
+}) => {
   return (
     <div className="tile" onClick={playTurn}>
-      <Player turn={turn} />
+      <Player place={place} />
     </div>
   )
 }
