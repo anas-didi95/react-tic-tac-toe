@@ -12,7 +12,7 @@ const GameContext = createContext<{
 }>(initialState)
 
 const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [turn, setTurn] = useState(1)
+  const [turn, setTurn] = useState(0)
   const [placeList, setPlaceList] = useState([
     -1, -1, -1, -1, -1, -1, -1, -1, -1,
   ])
@@ -21,13 +21,12 @@ const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       return
     }
 
-    const newTurn = (turn + 1) % 2
     setPlaceList((prev) => [
       ...prev.slice(0, idx),
-      newTurn,
+      turn,
       ...prev.slice(idx + 1),
     ])
-    setTurn(newTurn)
+    setTurn((prev) => (prev + 1) % 2)
   }
 
   return (

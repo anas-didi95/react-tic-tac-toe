@@ -1,8 +1,10 @@
+import Player from "../Player"
 import "./style.scss"
 
-const Display: React.FC<{}> = () => (
+const Display: React.FC<{ turn: number }> = ({ turn }) => (
   <section className="display">
-    Player <span className="display-player playerX">O</span>'s turn
+    Player <Player place={turn} />
+    's turn
   </section>
 )
 
