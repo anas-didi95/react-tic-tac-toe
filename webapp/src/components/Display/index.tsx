@@ -1,11 +1,8 @@
-import Player from "../Player"
+import { ReactNode } from "react"
 import "./style.scss"
 
-const Display: React.FC<{ turn: number }> = ({ turn }) => (
-  <section className="display">
-    Player <Player place={turn} />
-    's turn
-  </section>
+const Display: React.FC<{ children: ReactNode }> = ({ children }) => (
+  <section className="display">{children}</section>
 )
 
 export default Display
