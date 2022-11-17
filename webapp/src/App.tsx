@@ -22,9 +22,14 @@ const App: React.FC<{}> = () => {
         ))}
       </Container>
       {hasWinner && (
-        <Display>
-          Player <Player place={turn} /> Won
-        </Display>
+        <>
+          <Display>
+            Player <Player place={turn} /> Won
+          </Display>
+          <section className="controls">
+            <button id="reset">Reset</button>
+          </section>
+        </>
       )}
     </main>
   )
