@@ -8,27 +8,26 @@ import {
 
 const initialState = {
   turn: 0,
-  placeList: [],
+  placeList: [-1, -1, -1, -1, -1, -1, -1, -1, -1],
   gameDone: false,
   winner: -2,
   playTurn: (idx: number) => {},
+  resetGame: () => {},
 }
-
 const GameContext = createContext<{
   turn: number
   placeList: number[]
   gameDone: boolean
   winner: number
   playTurn: (idx: number) => void
+  resetGame: () => void
 }>(initialState)
 
 const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [turn, setTurn] = useState(0)
-  const [placeList, setPlaceList] = useState([
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  ])
-  const [gameDone, setGameDone] = useState(false)
-  const [winner, setWinner] = useState(-99)
+  const [turn, setTurn] = useState(initialState.turn)
+  const [placeList, setPlaceList] = useState(initialState.placeList)
+  const [gameDone, setGameDone] = useState(initialState.gameDone)
+  const [winner, setWinner] = useState(initialState.winner)
   const playTurn = (idx: number) => {
     if (gameDone) {
       return
@@ -42,6 +41,12 @@ const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       ...prev.slice(idx + 1),
     ])
     setTurn((prev) => (prev + 1) % 2)
+  }
+  const resetGame = () => {
+    setTurn(initialState.turn)
+    setPlaceList(initialState.placeList)
+    setGameDone(initialState.gameDone)
+    setWinner(initialState.winner)
   }
 
   useEffect(() => {
@@ -59,6 +64,7 @@ const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         gameDone,
         winner,
         playTurn,
+        resetGame,
       }}>
       {children}
     </GameContext.Provider>

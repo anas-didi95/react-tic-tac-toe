@@ -7,7 +7,8 @@ import Title from "./components/Title"
 import { useGameContext } from "./utils/contexts/GameContext"
 
 const App: React.FC<{}> = () => {
-  const { placeList, turn, gameDone, winner, playTurn } = useGameContext()
+  const { placeList, turn, gameDone, winner, playTurn, resetGame } =
+    useGameContext()
 
   return (
     <main className="background">
@@ -39,7 +40,9 @@ const App: React.FC<{}> = () => {
             )}
           </Display>
           <section className="controls">
-            <button id="reset">Reset</button>
+            <button id="reset" onClick={resetGame}>
+              Reset
+            </button>
           </section>
         </>
       )}
