@@ -29,10 +29,7 @@ const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [gameDone, setGameDone] = useState(initialState.gameDone)
   const [winner, setWinner] = useState(initialState.winner)
   const playTurn = (idx: number) => {
-    if (gameDone) {
-      return
-    }
-    if (placeList[idx] !== -1) {
+    if (gameDone || placeList[idx] !== -1) {
       return
     }
     setPlaceList((prev) => [
