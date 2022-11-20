@@ -7,24 +7,36 @@ import Title from "./components/Title"
 import { useGameContext } from "./utils/contexts/GameContext"
 
 const App: React.FC<{}> = () => {
-  const { placeList, turn, hasWinner, playTurn } = useGameContext()
+  const { placeList, turn, gameDone, winner, playTurn } = useGameContext()
 
   return (
     <main className="background">
       <Title />
       <Display>
-        Player <Player place={turn} />
-        's turn
+        {gameDone ? (
+          <span>Game End</span>
+        ) : (
+          <>
+            Player <Player place={turn} />
+            's turn
+          </>
+        )}
       </Display>
       <Container>
         {placeList.map((place, i) => (
           <Tile key={`tile${i}`} place={place} playTurn={() => playTurn(i)} />
         ))}
       </Container>
-      {hasWinner && (
+      {gameDone && (
         <>
           <Display>
-            Player <Player place={turn} /> Won
+            {winner < 0 ? (
+              <span>Tie</span>
+            ) : (
+              <>
+                Player <Player place={turn} /> Won
+              </>
+            )}
           </Display>
           <section className="controls">
             <button id="reset">Reset</button>
