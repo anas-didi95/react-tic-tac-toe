@@ -24,10 +24,19 @@ const initialState: TContext = {
   playTurn: (idx: number) => {},
   resetGame: () => {},
 }
+const winList: number[][] = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+]
 const GameContext = createContext(initialState)
 const reducer = (state: TState, payload: TPayload): TState => {
   const { action, idx = -1 } = payload
-  const { gameDone, placeList, turn } = state
+  const { gameDone, placeList, turn, winner } = state
   switch (action) {
     case "TURN":
       if (gameDone || placeList[idx] !== -1) {
@@ -40,9 +49,23 @@ const reducer = (state: TState, payload: TPayload): TState => {
         ...placeList.slice(idx + 1),
       ]
       const newTurn = (turn + 1) % 2
-      let newGameDone = false
-      let newWinner = -2
-      if (newPlaceList.indexOf(-1) < 0) {
+      let newGameDone: boolean = gameDone
+      let newWinner = winner
+
+      for (let i = 0; i < winList.length && !gameDone; i++) {
+        const i1 = winList[i][0]
+        const i2 = winList[i][1]
+        const i3 = winList[i][2]
+        if (
+          turn === newPlaceList[i1] &&
+          newPlaceList[i1] === newPlaceList[i2] &&
+          newPlaceList[i2] === newPlaceList[i3]
+        ) {
+          newGameDone = true
+          newWinner = turn
+        }
+      }
+      if (!newGameDone && newPlaceList.indexOf(-1) < 0) {
         newGameDone = true
         newWinner = -1
       }

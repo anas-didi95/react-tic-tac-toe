@@ -35,7 +35,7 @@ const App: React.FC<{}> = () => {
               <span>Tie</span>
             ) : (
               <>
-                Player <Player place={turn} /> Won
+                Player <Player place={winner} /> Won
               </>
             )}
           </Display>
