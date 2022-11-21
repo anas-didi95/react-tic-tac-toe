@@ -32,6 +32,7 @@ const winList: number[][] = [
   [1, 4, 7],
   [2, 5, 8],
   [0, 4, 8],
+  [6, 4, 2],
 ]
 const GameContext = createContext(initialState)
 const reducer = (state: TState, payload: TPayload): TState => {
