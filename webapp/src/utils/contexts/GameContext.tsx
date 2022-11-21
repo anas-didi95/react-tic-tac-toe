@@ -1,12 +1,22 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import { createContext, ReactNode, useContext, useReducer } from "react"
 
-const initialState = {
+type TState = {
+  turn: number
+  placeList: number[]
+  gameDone: boolean
+  winner: number
+}
+type TFunction = {
+  playTurn: (idx: number) => void
+  resetGame: () => void
+}
+type TContext = TState & TFunction
+type TPayload = {
+  action: "TURN" | "RESET"
+  idx?: number
+}
+
+const initialState: TContext = {
   turn: 0,
   placeList: [-1, -1, -1, -1, -1, -1, -1, -1, -1],
   gameDone: false,
@@ -14,52 +24,61 @@ const initialState = {
   playTurn: (idx: number) => {},
   resetGame: () => {},
 }
-const GameContext = createContext<{
-  turn: number
-  placeList: number[]
-  gameDone: boolean
-  winner: number
-  playTurn: (idx: number) => void
-  resetGame: () => void
-}>(initialState)
+const GameContext = createContext(initialState)
+const reducer = (state: TState, payload: TPayload): TState => {
+  const { action, idx = -1 } = payload
+  const { gameDone, placeList, turn } = state
+  switch (action) {
+    case "TURN":
+      if (gameDone || placeList[idx] !== -1) {
+        return state
+      }
+
+      const newPlaceList = [
+        ...placeList.slice(0, idx),
+        turn,
+        ...placeList.slice(idx + 1),
+      ]
+      const newTurn = (turn + 1) % 2
+      let newGameDone = false
+      let newWinner = -2
+      if (newPlaceList.indexOf(-1) < 0) {
+        newGameDone = true
+        newWinner = -1
+      }
+
+      return {
+        gameDone: newGameDone,
+        placeList: newPlaceList,
+        turn: newTurn,
+        winner: newWinner,
+      }
+    case "RESET":
+      return {
+        gameDone: initialState.gameDone,
+        placeList: initialState.placeList,
+        turn: initialState.turn,
+        winner: initialState.winner,
+      }
+    default:
+      throw new Error(`[gameReducer] Action not found! ${action}`)
+  }
+}
 
 const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [turn, setTurn] = useState(initialState.turn)
-  const [placeList, setPlaceList] = useState(initialState.placeList)
-  const [gameDone, setGameDone] = useState(initialState.gameDone)
-  const [winner, setWinner] = useState(initialState.winner)
-  const playTurn = (idx: number) => {
-    if (gameDone || placeList[idx] !== -1) {
-      return
-    }
-    setPlaceList((prev) => [
-      ...prev.slice(0, idx),
-      turn,
-      ...prev.slice(idx + 1),
-    ])
-    setTurn((prev) => (prev + 1) % 2)
-  }
-  const resetGame = () => {
-    setTurn(initialState.turn)
-    setPlaceList(initialState.placeList)
-    setGameDone(initialState.gameDone)
-    setWinner(initialState.winner)
-  }
-
-  useEffect(() => {
-    if (placeList.indexOf(-1) < 0) {
-      setGameDone(true)
-      setWinner(-1)
-    }
-  }, [placeList])
+  const [state, dispatch] = useReducer(reducer, {
+    turn: initialState.turn,
+    placeList: initialState.placeList,
+    gameDone: initialState.gameDone,
+    winner: initialState.winner,
+  })
+  const playTurn = (idx: number) => dispatch({ action: "TURN", idx })
+  const resetGame = () => dispatch({ action: "RESET" })
 
   return (
     <GameContext.Provider
       value={{
-        turn,
-        placeList,
-        gameDone,
-        winner,
+        ...state,
         playTurn,
         resetGame,
       }}>
